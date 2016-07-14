@@ -75,10 +75,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\ICountry.cs" />
+    <Compile Include="ViewModel\IPlayer.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Team.cs" />
-    <Compile Include="ViewModel\TeamOverGame.cs" />
+    <Compile Include="ViewModel\Players.cs" />
     <Compile Include="ViewModel\TeamStatistics.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace gameBall.ViewModel
 {
-    interface ITeam
+    public interface IPlayer
     {
         string getInfo();
         void setDisposition();

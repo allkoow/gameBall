@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:gameBall"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="700"
+        Title="MainWindow" Height="600" Width="800"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
         
     <Grid>
@@ -15,24 +15,30 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         
         <DataGrid Grid.Row="0" ItemsSource="{Binding teams}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nazwa" Binding="{Binding name}"/>
                 <DataGridTextColumn Header="Skrót" Binding="{Binding sym}"/>
-                <DataGridTextColumn Header="Miejsce w rankingu" Binding="{Binding ranked}"/>
+                <DataGridTextColumn Header="Miejsce w rankingu" Binding="{Binding ranked}" />
+                <DataGridTextColumn Header="Punkty" Binding="{Binding pointsInRanking}"/>
                 <DataGridTextColumn Header="Dyspozycja na turnieju" Binding="{Binding tournamentDisposition}"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-            
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnSaveToFile" Content="Zapisz dane do pliku" />
-            <Button x:Name="btnLoadFromFile" Content="Wczytaj dane z pliku" />
+            <Button Grid.Column="0" Margin="5" x:Name="btnSaveToFile" 
+                    Content="Zapisz dane do pliku"
+                    Command="{Binding SaveDataCommand}"/>
+            <Button Grid.Column="1" Margin="5" x:Name="btnLoadFromFile" 
+                    Content="Wczytaj dane z pliku"
+                    Command="{Binding LoadDataCommand}"/>
         </Grid>
         
         <Grid Grid.Column="1">
