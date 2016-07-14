@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace gameBall.ViewModel
 {
-    public class Team : TeamStatistics
+    public class Team : TeamStatistics, INotifyPropertyChanged
     {
         private string _name;
         [XmlElement("Name")]
@@ -17,6 +17,7 @@ namespace gameBall.ViewModel
             get { return _name; }
             set
             { _name = value;
+                OnPropertyChanged(nameof(name));
             }
         }
 
@@ -28,6 +29,7 @@ namespace gameBall.ViewModel
             set
             {
                 _ranked = value;
+                OnPropertyChanged(nameof(ranked));
             }
         }
 
@@ -39,8 +41,17 @@ namespace gameBall.ViewModel
             set
             {
                 _sym = value;
+                OnPropertyChanged(nameof(sym));
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

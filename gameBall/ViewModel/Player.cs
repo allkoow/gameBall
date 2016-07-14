@@ -1,25 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace gameBall.ViewModel
 {
-    public class Players : Team
+    public class Player : Team, INotifyPropertyChanged
     {
         private int _sets;
         public int sets
         {
             get { return _sets; }
-            set { _sets = value; }
+            set
+            {
+                _sets = value;
+                OnPropertyChanged(nameof(sets));
+            }
         }
 
         private int _pointsInSet;
         public int pointsInSet
         {
             get { return _pointsInSet; }
-            set { _pointsInSet = value; }
+            set
+            {
+                _pointsInSet = value;
+                OnPropertyChanged(nameof(pointsInSet));
+            }
         }
 
         private double _hitRatio;
@@ -44,17 +53,13 @@ namespace gameBall.ViewModel
         }
 
         private double _triedness;
-        public double triednesse
+        public double triedness
         {
             get { return _triedness; }
             set { _triedness = value; }
         }
 
         private double _concentration;
-        public double concentration
-        {
-            get { return _concentration; }
-            set { _concentration = value; }
-        }
+        public double concentration;
     }
 }

@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -14,6 +15,7 @@ namespace gameBall.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        #region Variables and collection
         private ObservableCollection<Team> _teams = new ObservableCollection<Team>();
         public ObservableCollection<Team> teams
         {
@@ -24,27 +26,97 @@ namespace gameBall.ViewModel
         string fileAddress = "data.xml";
 
         // Objects for game
-        Players playerA = null;
-        Players playerB = null;
+        private Team _selectedPlayer = null;
+        public Team selectedPlayer
+        {
+            get { return _selectedPlayer; }
+            set
+            {
+                _selectedPlayer = value;
+                RaisePropertyChanged(nameof(selectedPlayer));
+            }
+        }
+
+        private Player _playerA = null;
+        public Player playerA
+        {
+            get { return _playerA; }
+            set
+            {
+                _playerA = value;
+                RaisePropertyChanged(nameof(playerA));
+            }
+        }
+
+        private Player _playerB = null;
+        public Player playerB
+        {
+            get { return _playerB; }
+            set
+            {
+                _playerB= value;
+                RaisePropertyChanged(nameof(playerB));
+            }
+        }
+        #endregion
 
         public MainViewModel()
         {
             SaveDataCommand = new RelayCommand(saveDataToFile);
             LoadDataCommand = new RelayCommand(loadDataFromFile);
+            AddTeam1Command = new RelayCommand(addTeam1);
+            AddTeam2Command = new RelayCommand(addTeam2);
         }
 
+        public void addTeam1()
+        {
+            _playerA = new Player()
+            {
+                name = selectedPlayer.name,
+                ranked = selectedPlayer.ranked,
+                sym = selectedPlayer.sym,
+                tournamentDisposition = selectedPlayer.tournamentDisposition
+            };
+
+            MessageBox.Show(playerA.sets.ToString());
+        }
+
+        public void addTeam2()
+        {
+            _playerB = new Player()
+            {
+                name = selectedPlayer.name,
+                ranked = selectedPlayer.ranked,
+                sym = selectedPlayer.sym,
+                tournamentDisposition = selectedPlayer.tournamentDisposition
+            };
+        }
+
+        #region Commands
         public ICommand LoadDataCommand
         {
             get;
             private set;
         }
-
         public ICommand SaveDataCommand
         {
             get;
             private set;
         }
 
+        public ICommand AddTeam1Command
+        {
+            get;
+            private set;
+        }
+        public ICommand AddTeam2Command
+        {
+            get;
+            private set;
+        }
+        #endregion
+
+        #region File operations
         public void loadDataFromFile()
         {
             try
@@ -55,7 +127,7 @@ namespace gameBall.ViewModel
 
                 _teams.Clear();
 
-                foreach(XPathNavigator team in pathNodeIterator)
+                foreach (XPathNavigator team in pathNodeIterator)
                 {
                     double tournamentDispositionConvert = convertStringToDouble(team.SelectSingleNode("Disposition").Value);
                     double pointsInRankingConvert = convertStringToDouble(team.SelectSingleNode("Points").Value);
@@ -69,9 +141,9 @@ namespace gameBall.ViewModel
                         tournamentDisposition = tournamentDispositionConvert
                     });
                 }
-                MessageBox.Show("Zaladowano dane.", "Informacja");
+                //MessageBox.Show("Zaladowano dane.", "Informacja");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 messageBoxError(ex);
             }
@@ -94,11 +166,12 @@ namespace gameBall.ViewModel
                 streamWriter.Dispose();
                 MessageBox.Show("Zapisano dane do pliku.", "Informacja");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 messageBoxError(ex);
             }
         }
+        #endregion
 
         void messageBoxError(Exception ex)
         {
@@ -111,6 +184,5 @@ namespace gameBall.ViewModel
             double i = Convert.ToDouble(str);
             return i;
         }
-
     }
 }

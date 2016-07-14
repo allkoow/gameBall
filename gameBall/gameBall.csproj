@@ -78,7 +78,7 @@
     <Compile Include="ViewModel\IPlayer.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Team.cs" />
-    <Compile Include="ViewModel\Players.cs" />
+    <Compile Include="ViewModel\Player.cs" />
     <Compile Include="ViewModel\TeamStatistics.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
