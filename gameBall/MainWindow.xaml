@@ -9,10 +9,30 @@
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Window.Resources>
+        <local:CompareTwoStringConverter x:Key="compareTwoStringConverter" />
+        <local:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <local:CheckStringConverter x:Key="checkStringConverter" />
+        <local:CompareIntAndBool x:Key="CompareIntAndBoolConverter" />
+        
         <Style x:Key="txtBlockStyle" TargetType="TextBlock">
             <Setter Property="Margin" Value="5" />
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="Height" Value="25" />
+        </Style>
+
+        <Style x:Key="btnSelectStyle" TargetType="Button" >
+            <Setter Property="IsEnabled" Value="True" />
+                <Style.Triggers>
+                    <DataTrigger Value="False">
+                        <Setter Property="IsEnabled" Value="False" />
+                        <DataTrigger.Binding>
+                            <MultiBinding Converter="{StaticResource CompareIntAndBoolConverter}">
+                                <Binding ElementName="dataGrid" Path="SelectedIndex" />
+                                <Binding ElementName="btnStartGame" Path="IsChecked" />
+                            </MultiBinding>
+                        </DataTrigger.Binding>
+                    </DataTrigger>
+                </Style.Triggers>
         </Style>
     </Window.Resources>
     
@@ -62,18 +82,90 @@
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="0" TextAlignment="Right" Text="Wybrana drużyna nr 1:" />
-                <TextBlock x:Name="txtBlockSelectTeam1" Grid.Column="1" Margin="5" TextAlignment="Center">
+                <Button x:Name="btnSelectTeam1" Grid.Row="1" Grid.Column="0" Margin="5" 
+                        Content="Dodaj drużynę nr 1" 
+                        Command="{Binding AddTeam1Command}"
+                        Style="{StaticResource btnSelectStyle}">
+                </Button>
+                <Button x:Name="btnSelectTeam2" Grid.Row="1" Grid.Column="1" Margin="5" 
+                        Content="Dodaj drużynę nr 2"
+                        Command="{Binding AddTeam2Command}"
+                        Style="{StaticResource btnSelectStyle}">
+                </Button>
+            </Grid>
+
+            <ToggleButton x:Name="btnStartGame" Grid.Row="1" Margin="5" >
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Content" Value="Rozpocznij grę" />
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Setter Property="ToolTipService.ShowOnDisabled" Value="False" />
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Content" Value="Przerwij grę" />
+                            </Trigger>
+                            <DataTrigger Value="False">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource compareTwoStringConverter}">
+                                        <Binding ElementName="txtBlockPlayer1" Path="Text" />
+                                        <Binding ElementName="txtBlockPlayer2" Path="Text" />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter Property="IsEnabled" Value="False" />
+                                <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                                <Setter Property="ToolTip" Value="Wybierz dwie różne drużyny." />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+
+            <Grid x:Name="gridInformation" Grid.Row="2" Height="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Row="0" Grid.Column="1" Text=":" />
+                <TextBlock x:Name="txtBlockPlayer1"  Grid.Row="0" Grid.Column="0">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Text" Value="{Binding selectedPlayer.name}" />
+                            <Setter Property="Text" Value="-" />
+                            <Setter Property="Margin" Value="5" />
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Height" Value="25" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=dataGrid, Path=SelectedIndex}" Value="-1">
-                                    <Setter Property="Text" Value="-" />
+                                <DataTrigger Value="True">
+                                    <Setter Property="Text" Value="{Binding playerA.name}" />
+                                    <DataTrigger.Binding>
+                                        <Binding Path="playerA.name" UpdateSourceTrigger="PropertyChanged" 
+                                                 Converter="{StaticResource checkStringConverter}" />
+                                    </DataTrigger.Binding>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock x:Name="txtBlockPlayer2" Grid.Row="0" Grid.Column="2">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="-" />
+                            <Setter Property="Margin" Value="5" />
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Height" Value="25" />
+                            <Style.Triggers>
+                                <DataTrigger Value="True">
+                                    <Setter Property="Text" Value="{Binding playerB.name}" />
+                                    <DataTrigger.Binding>
+                                        <Binding Path="playerB.name" 
+                                                 UpdateSourceTrigger="PropertyChanged"
+                                                 Converter="{StaticResource checkStringConverter}" />
+                                    </DataTrigger.Binding>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -81,62 +173,39 @@
                 </TextBlock>
             </Grid>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <Button x:Name="btnSelectTeam1" Grid.Row="1" Grid.Column="0" Margin="5" 
-                        Content="Dodaj drużynę nr 1" 
-                        Command="{Binding AddTeam1Command}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="IsEnabled" Value="True" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=dataGrid, Path=SelectedIndex}" Value="-1">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <Button x:Name="btnSelectTeam2" Grid.Row="1" Grid.Column="1" Margin="5" 
-                        Content="Dodaj drużynę nr 2"
-                        Command="{Binding AddTeam2Command}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="IsEnabled" Value="True" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=dataGrid, Path=SelectedIndex}" Value="-1">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </Grid>
-            
-            <Button x:Name="btnStartGame" Grid.Row="2" Margin="5" Content="Rozpocznij grę" >
-                
-            </Button>
-
-            <Grid x:Name="gridInformation" Grid.Row="3">
+            <Grid x:Name="gridGame" Grid.Row="3" 
+                  Visibility="{Binding ElementName=btnStartGame, 
+                                        Path=IsChecked, 
+                                        Converter={StaticResource boolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
                 </Grid.RowDefinitions>
                 
-                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Row="0" Grid.Column="1" Text=":" />
-                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Row="0" Grid.Column="0" 
-                           Text="{Binding playerA.sets, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" 
+                           Text="{Binding Path=playerA.sets}"
+                           Grid.Column="0"/>
 
+                <TextBlock Style="{StaticResource txtBlockStyle}" 
+                           Text="{Binding Path=playerB.sets}"
+                           Grid.Column="2"/>
+
+                <TextBlock Style="{StaticResource txtBlockStyle}" 
+                           Text="{Binding Path=playerA.pointsInSet}"
+                           Grid.Row="1"
+                           Grid.Column="0"/>
+
+                <TextBlock Style="{StaticResource txtBlockStyle}" 
+                           Text="{Binding Path=playerB.pointsInSet}"
+                           Grid.Row="1"
+                           Grid.Column="2"/>
             </Grid>
+            
         </Grid>
     </Grid>
 </Window>

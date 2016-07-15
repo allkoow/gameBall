@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace gameBall.ViewModel
@@ -51,7 +52,10 @@ namespace gameBall.ViewModel
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
+            {
                 handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+                
         }
     }
 }

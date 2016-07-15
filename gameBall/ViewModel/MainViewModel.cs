@@ -64,11 +64,11 @@ namespace gameBall.ViewModel
         {
             SaveDataCommand = new RelayCommand(saveDataToFile);
             LoadDataCommand = new RelayCommand(loadDataFromFile);
-            AddTeam1Command = new RelayCommand(addTeam1);
+            AddTeam1Command = new RelayCommand<object>(addTeam1);
             AddTeam2Command = new RelayCommand(addTeam2);
         }
 
-        public void addTeam1()
+        public void addTeam1(object sender)
         {
             _playerA = new Player()
             {
@@ -78,7 +78,7 @@ namespace gameBall.ViewModel
                 tournamentDisposition = selectedPlayer.tournamentDisposition
             };
 
-            MessageBox.Show(playerA.sets.ToString());
+            RaisePropertyChanged(nameof(playerA));
         }
 
         public void addTeam2()
@@ -90,6 +90,8 @@ namespace gameBall.ViewModel
                 sym = selectedPlayer.sym,
                 tournamentDisposition = selectedPlayer.tournamentDisposition
             };
+
+            RaisePropertyChanged(nameof(playerB));
         }
 
         #region Commands
