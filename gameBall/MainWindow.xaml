@@ -185,25 +185,65 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 
+                <!-- sets -->
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Text="Sety" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" 
                            Text="{Binding Path=playerA.sets}"
                            Grid.Column="0"/>
-
                 <TextBlock Style="{StaticResource txtBlockStyle}" 
                            Text="{Binding Path=playerB.sets}"
                            Grid.Column="2"/>
-
+                
+                <!-- points -->
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="1" Text="Punkty" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" 
                            Text="{Binding Path=playerA.pointsInSet}"
                            Grid.Row="1"
                            Grid.Column="0"/>
-
                 <TextBlock Style="{StaticResource txtBlockStyle}" 
                            Text="{Binding Path=playerB.pointsInSet}"
                            Grid.Row="1"
                            Grid.Column="2"/>
+                
+                <!-- information -->
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="2" 
+                           Text="Dyspozycja dnia" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="2" 
+                           Text="{Binding Path=playerA.dayDispostion}" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="2" Grid.Row="2" 
+                           Text="{Binding Path=playerB.dayDispostion}" />
+
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="3" 
+                           Text="Morale" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="3" 
+                           Text="{Binding Path=playerA.morale}" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="2" Grid.Row="3" 
+                           Text="{Binding Path=playerB.morale}" />
+
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="4" 
+                           Text="Zmęczenie" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="4" 
+                           Text="{Binding Path=playerA.triedness}" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="2" Grid.Row="4" 
+                           Text="{Binding Path=playerB.triedness}" />
+
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="5" 
+                           Text="Koncentracja" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="5" 
+                           Text="{Binding Path=playerA.concentration}" />
+                <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="2" Grid.Row="5" 
+                           Text="{Binding Path=playerB.concentration}" />
+                
+                <!-- messages -->
+                <TextBox x:Name="txtBoxMessage" Grid.Row="6" Grid.ColumnSpan="3" Margin="5" Padding="5"
+                         TextAlignment="Center"/>
             </Grid>
             
         </Grid>

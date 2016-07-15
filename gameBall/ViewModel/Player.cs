@@ -60,6 +60,12 @@ namespace gameBall.ViewModel
         }
 
         private double _concentration;
-        public double concentration;
+        public double concentration
+        {
+            get { return _concentration; }
+            set { _concentration = value; }
+        }
+
+        public int flagOfPoints;
     }
 }

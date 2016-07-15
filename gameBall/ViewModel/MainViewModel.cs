@@ -58,6 +58,8 @@ namespace gameBall.ViewModel
                 RaisePropertyChanged(nameof(playerB));
             }
         }
+
+        public Game game = null;
         #endregion
 
         public MainViewModel()

@@ -79,6 +79,8 @@
     <Compile Include="CheckStringConverter.cs" />
     <Compile Include="CompareIntAndBool.cs" />
     <Compile Include="CompareTwoStringConverter.cs" />
+    <Compile Include="ViewModel\Game.cs" />
+    <Compile Include="ViewModel\IGame.cs" />
     <Compile Include="ViewModel\IPlayer.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Team.cs" />
