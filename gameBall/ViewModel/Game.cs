@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,14 @@ namespace gameBall.ViewModel
         enum constFragment { easy, free, penalty };
         bool flagOfTheEnd = false;
 
-        int sets;
+        private StringBuilder _texts = null;
+        public StringBuilder texts
+        {
+            get { return _texts; }
+            set { _texts = value; }
+        }
 
-        Game(Player playerA, Player playerB)
+        public Game(Player playerA, Player playerB)
         {
             this.playerA = playerA;
             this.playerB = playerB;
@@ -34,6 +40,9 @@ namespace gameBall.ViewModel
 
             calculateHitRatioOfPlayer(playerA);
             calculateHitRatioOfPlayer(playerB);
+
+            _texts = new StringBuilder();
+            _texts.AppendLine("testowa linia");
         }
 
         public void setParametersOfPlayer(Player player)

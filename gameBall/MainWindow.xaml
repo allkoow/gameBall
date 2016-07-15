@@ -13,6 +13,7 @@
         <local:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
         <local:CheckStringConverter x:Key="checkStringConverter" />
         <local:CompareIntAndBool x:Key="CompareIntAndBoolConverter" />
+        <local:StringBuilderToStringConverter x:Key="stringBuilderToStringConverter" />
         
         <Style x:Key="txtBlockStyle" TargetType="TextBlock">
             <Setter Property="Margin" Value="5" />
@@ -98,7 +99,7 @@
                 </Button>
             </Grid>
 
-            <ToggleButton x:Name="btnStartGame" Grid.Row="1" Margin="5" >
+            <ToggleButton x:Name="btnStartGame" Grid.Row="1" Margin="5">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton">
                         <Setter Property="Content" Value="Rozpocznij grę" />
@@ -107,6 +108,7 @@
                         <Style.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter Property="Content" Value="Przerwij grę" />
+                                <Setter Property="Command" Value="{Binding StartGameCommand}" />
                             </Trigger>
                             <DataTrigger Value="False">
                                 <DataTrigger.Binding>
@@ -243,7 +245,9 @@
                 
                 <!-- messages -->
                 <TextBox x:Name="txtBoxMessage" Grid.Row="6" Grid.ColumnSpan="3" Margin="5" Padding="5"
-                         TextAlignment="Center"/>
+                         TextAlignment="Center"
+                         Text="{Binding Path=game.texts, UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource stringBuilderToStringConverter}}"/>
             </Grid>
             
         </Grid>

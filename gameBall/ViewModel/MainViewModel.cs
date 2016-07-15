@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
@@ -59,7 +60,16 @@ namespace gameBall.ViewModel
             }
         }
 
-        public Game game = null;
+        private Game _game = null;
+        public Game game
+        {
+            get { return _game; }
+            set
+            {
+                _game = value;
+                RaisePropertyChanged(nameof(game));
+            }
+        }
         #endregion
 
         public MainViewModel()
@@ -68,6 +78,7 @@ namespace gameBall.ViewModel
             LoadDataCommand = new RelayCommand(loadDataFromFile);
             AddTeam1Command = new RelayCommand<object>(addTeam1);
             AddTeam2Command = new RelayCommand(addTeam2);
+            StartGameCommand = new RelayCommand(playGame);
         }
 
         public void addTeam1(object sender)
@@ -96,6 +107,17 @@ namespace gameBall.ViewModel
             RaisePropertyChanged(nameof(playerB));
         }
 
+        public void playGame()
+        {
+            if(_game != null)
+            {
+                _game = new Game(playerA, playerB);
+                RaisePropertyChanged(nameof(game));
+            }
+            
+            
+        }
+
         #region Commands
         public ICommand LoadDataCommand
         {
@@ -118,6 +140,7 @@ namespace gameBall.ViewModel
             get;
             private set;
         }
+        public RelayCommand StartGameCommand { get; private set; }
         #endregion
 
         #region File operations
