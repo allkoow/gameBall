@@ -102,13 +102,15 @@
             <ToggleButton x:Name="btnStartGame" Grid.Row="1" Margin="5">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton">
-                        <Setter Property="Content" Value="Rozpocznij grę" />
-                        <Setter Property="IsEnabled" Value="True" />
                         <Setter Property="ToolTipService.ShowOnDisabled" Value="False" />
                         <Style.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter Property="Content" Value="Przerwij grę" />
                                 <Setter Property="Command" Value="{Binding StartGameCommand}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Content" Value="Rozpocznij grę" />
+                                <Setter Property="Command" Value="{Binding CancelGameCommand}" />
                             </Trigger>
                             <DataTrigger Value="False">
                                 <DataTrigger.Binding>
@@ -218,34 +220,35 @@
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="2" 
                            Text="Dyspozycja dnia" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="2" 
-                           Text="{Binding Path=playerA.dayDispostion}" />
+                           Text="{Binding Path=playerA.dayDispostion, StringFormat=F2}" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="2" Grid.Row="2" 
-                           Text="{Binding Path=playerB.dayDispostion}" />
+                           Text="{Binding Path=playerB.dayDispostion, StringFormat=F2}" />
 
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="3" 
                            Text="Morale" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="3" 
-                           Text="{Binding Path=playerA.morale}" />
+                           Text="{Binding Path=playerA.morale, StringFormat=F2}" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="2" Grid.Row="3" 
-                           Text="{Binding Path=playerB.morale}" />
+                           Text="{Binding Path=playerB.morale, StringFormat=F2}" />
 
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="4" 
                            Text="Zmęczenie" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="4" 
-                           Text="{Binding Path=playerA.triedness}" />
+                           Text="{Binding Path=playerA.triedness, StringFormat=F2}" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="2" Grid.Row="4" 
-                           Text="{Binding Path=playerB.triedness}" />
+                           Text="{Binding Path=playerB.triedness, StringFormat=F2}" />
 
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="1" Grid.Row="5" 
                            Text="Koncentracja" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="0" Grid.Row="5" 
-                           Text="{Binding Path=playerA.concentration}" />
+                           Text="{Binding Path=playerA.concentration, StringFormat=F2}" />
                 <TextBlock Style="{StaticResource txtBlockStyle}" Grid.Column="2" Grid.Row="5" 
-                           Text="{Binding Path=playerB.concentration}" />
+                           Text="{Binding Path=playerB.concentration, StringFormat=F2}" />
                 
                 <!-- messages -->
                 <TextBox x:Name="txtBoxMessage" Grid.Row="6" Grid.ColumnSpan="3" Margin="5" Padding="5"
                          TextAlignment="Center"
+                         
                          Text="{Binding Path=game.texts, UpdateSourceTrigger=PropertyChanged, 
                                         Converter={StaticResource stringBuilderToStringConverter}}"/>
             </Grid>

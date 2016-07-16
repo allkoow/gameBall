@@ -70,6 +70,8 @@ namespace gameBall.ViewModel
                 RaisePropertyChanged(nameof(game));
             }
         }
+
+        BackgroundWorker _backgroundWorker = null;
         #endregion
 
         public MainViewModel()
@@ -78,7 +80,8 @@ namespace gameBall.ViewModel
             LoadDataCommand = new RelayCommand(loadDataFromFile);
             AddTeam1Command = new RelayCommand<object>(addTeam1);
             AddTeam2Command = new RelayCommand(addTeam2);
-            StartGameCommand = new RelayCommand(playGame);
+            StartGameCommand = new RelayCommand(startGame);
+            CancelGameCommand = new RelayCommand(cancelGame);
         }
 
         public void addTeam1(object sender)
@@ -107,15 +110,44 @@ namespace gameBall.ViewModel
             RaisePropertyChanged(nameof(playerB));
         }
 
-        public void playGame()
+        public void startGame()
         {
-            if(_game != null)
+            if(_backgroundWorker == null)
             {
-                _game = new Game(playerA, playerB);
-                RaisePropertyChanged(nameof(game));
+                MessageBox.Show("info");
+
+                if (_game == null)
+                {
+                    _game = new Game(playerA, playerB);
+                    RaisePropertyChanged(nameof(game));
+                }
+
+                _backgroundWorker = new BackgroundWorker();
+                _backgroundWorker.DoWork += new DoWorkEventHandler(_game.playGame);
+                _backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_game.endOfTheMatch);
+                _backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(gameProgressChanged);
+                _backgroundWorker.WorkerReportsProgress = true;
+                _backgroundWorker.WorkerSupportsCancellation = true;
+
+                _backgroundWorker.RunWorkerAsync();
             }
-            
-            
+        }
+
+        private void cancelGame()
+        {
+            if(_backgroundWorker != null)
+            {
+                _backgroundWorker.CancelAsync();
+                _backgroundWorker.Dispose();
+
+                playerA = null;
+                playerB = null;
+            }   
+        }
+
+        private void gameProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            RaisePropertyChanged(nameof(game));
         }
 
         #region Commands
@@ -140,7 +172,8 @@ namespace gameBall.ViewModel
             get;
             private set;
         }
-        public RelayCommand StartGameCommand { get; private set; }
+        public ICommand StartGameCommand { get; private set; }
+        public ICommand CancelGameCommand { get; private set; }
         #endregion
 
         #region File operations

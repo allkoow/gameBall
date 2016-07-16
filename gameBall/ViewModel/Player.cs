@@ -42,28 +42,44 @@ namespace gameBall.ViewModel
         public double dayDispostion
         {
             get { return _dayDisposition; }
-            set { _dayDisposition = value; }
+            set
+            {
+                _dayDisposition = value;
+                OnPropertyChanged(nameof(dayDispostion));
+            }
         }
 
         private double _morale;
         public double morale
         {
             get { return _morale; }
-            set { _morale = value; }
+            set
+            {
+                _morale = value;
+                OnPropertyChanged(nameof(morale));
+            }
         }
 
         private double _triedness;
         public double triedness
         {
             get { return _triedness; }
-            set { _triedness = value; }
+            set
+            {
+                _triedness = value;
+                OnPropertyChanged(nameof(triedness));
+            }
         }
 
         private double _concentration;
         public double concentration
         {
             get { return _concentration; }
-            set { _concentration = value; }
+            set
+            {
+                _concentration = value;
+                OnPropertyChanged(nameof(concentration));
+            }
         }
 
         public int flagOfPoints;

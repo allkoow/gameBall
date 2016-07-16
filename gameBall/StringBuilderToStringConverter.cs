@@ -13,8 +13,13 @@ namespace gameBall
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            StringBuilder stringBuilder = (value as StringBuilder);
-            return stringBuilder.ToString();
+            if (value != null)
+            {
+                StringBuilder stringBuilder = (value as StringBuilder);
+                return stringBuilder.ToString();
+            }
+            else return null;
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
