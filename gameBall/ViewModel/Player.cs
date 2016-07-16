@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace gameBall.ViewModel
 {
-    public class Player : Team, INotifyPropertyChanged
+    public class Player : Team, INotifyPropertyChanged, IDisposable
     {
         private int _sets;
         public int sets
@@ -83,5 +83,10 @@ namespace gameBall.ViewModel
         }
 
         public int flagOfPoints;
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

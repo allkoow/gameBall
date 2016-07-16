@@ -257,7 +257,6 @@ namespace gameBall.ViewModel
             else
             {
                 texts.AppendLine("Koniec meczu.");
-                backgroundWorker.ReportProgress(0);
             }
         }
     }

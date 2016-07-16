@@ -86,35 +86,41 @@ namespace gameBall.ViewModel
 
         public void addTeam1(object sender)
         {
-            _playerA = new Player()
+            if(_playerA == null)
             {
-                name = selectedPlayer.name,
-                ranked = selectedPlayer.ranked,
-                sym = selectedPlayer.sym,
-                tournamentDisposition = selectedPlayer.tournamentDisposition
-            };
+                _playerA = new Player()
+                {
+                    name = selectedPlayer.name,
+                    ranked = selectedPlayer.ranked,
+                    sym = selectedPlayer.sym,
+                    tournamentDisposition = selectedPlayer.tournamentDisposition
+                };
 
-            RaisePropertyChanged(nameof(playerA));
+                RaisePropertyChanged(nameof(playerA));
+            }
         }
 
         public void addTeam2()
         {
-            _playerB = new Player()
+            if(_playerB == null)
             {
-                name = selectedPlayer.name,
-                ranked = selectedPlayer.ranked,
-                sym = selectedPlayer.sym,
-                tournamentDisposition = selectedPlayer.tournamentDisposition
-            };
+                _playerB = new Player()
+                {
+                    name = selectedPlayer.name,
+                    ranked = selectedPlayer.ranked,
+                    sym = selectedPlayer.sym,
+                    tournamentDisposition = selectedPlayer.tournamentDisposition
+                };
 
-            RaisePropertyChanged(nameof(playerB));
+                RaisePropertyChanged(nameof(playerB));
+            }   
         }
 
         public void startGame()
         {
             if(_backgroundWorker == null)
             {
-                MessageBox.Show("info");
+                MessageBox.Show("Poczatek meczu!");
 
                 if (_game == null)
                 {
@@ -139,9 +145,19 @@ namespace gameBall.ViewModel
             {
                 _backgroundWorker.CancelAsync();
                 _backgroundWorker.Dispose();
+                _backgroundWorker = null;
 
-                playerA = null;
-                playerB = null;
+                _playerA.Dispose();
+                _playerB.Dispose();
+                _playerA = null;
+                _playerB = null;
+
+                RaisePropertyChanged(nameof(playerA));
+                RaisePropertyChanged(nameof(playerB));
+
+                _game = null;
+
+                
             }   
         }
 

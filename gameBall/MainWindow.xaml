@@ -248,7 +248,7 @@
                 <!-- messages -->
                 <TextBox x:Name="txtBoxMessage" Grid.Row="6" Grid.ColumnSpan="3" Margin="5" Padding="5"
                          TextAlignment="Center"
-                         
+                         VerticalScrollBarVisibility="Auto"
                          Text="{Binding Path=game.texts, UpdateSourceTrigger=PropertyChanged, 
                                         Converter={StaticResource stringBuilderToStringConverter}}"/>
             </Grid>
