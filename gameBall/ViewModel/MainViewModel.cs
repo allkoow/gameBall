@@ -84,6 +84,7 @@ namespace gameBall.ViewModel
             CancelGameCommand = new RelayCommand(cancelGame);
         }
 
+        #region adding team methods
         public void addTeam1()
         {
             if(_playerA == null)
@@ -99,7 +100,7 @@ namespace gameBall.ViewModel
                 RaisePropertyChanged(nameof(playerA));
             }
         }
-
+        
         public void addTeam2()
         {
             if(_playerB == null)
@@ -115,7 +116,9 @@ namespace gameBall.ViewModel
                 RaisePropertyChanged(nameof(playerB));
             }   
         }
+        #endregion
 
+        #region methods for game - backgroundworker
         public void startGame()
         {
             if(_backgroundWorker == null)
@@ -163,34 +166,18 @@ namespace gameBall.ViewModel
         {
             RaisePropertyChanged(nameof(game));
         }
+        #endregion
 
-        #region Commands
-        public ICommand LoadDataCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand SaveDataCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand AddTeam1Command
-        {
-            get;
-            private set;
-        }
-        public ICommand AddTeam2Command
-        {
-            get;
-            private set;
-        }
+        #region commands
+        public ICommand LoadDataCommand { get; private set; }
+        public ICommand SaveDataCommand { get; private set; }
+        public ICommand AddTeam1Command { get; private set; }
+        public ICommand AddTeam2Command { get; private set; }
         public ICommand StartGameCommand { get; private set; }
         public ICommand CancelGameCommand { get; private set; }
         #endregion
 
-        #region File operations
+        #region file operations
         public void loadDataFromFile()
         {
             try
@@ -215,7 +202,6 @@ namespace gameBall.ViewModel
                         tournamentDisposition = tournamentDispositionConvert
                     });
                 }
-                //MessageBox.Show("Zaladowano dane.", "Informacja");
             }
             catch (Exception ex)
             {
@@ -249,7 +235,7 @@ namespace gameBall.ViewModel
 
         void messageBoxError(Exception ex)
         {
-            MessageBox.Show("Aplikacja wygenerowala wyj¹tek: " + ex, "Blad");
+            MessageBox.Show("Aplikacja wygenerowala wyjatek: " + ex, "Blad");
         }
 
         double convertStringToDouble(string str)

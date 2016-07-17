@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace gameBall.ViewModel
 {
-    public class Player : Team, INotifyPropertyChanged, IDisposable
+    public class Player : Team, IDisposable
     {
         private int _sets;
         public int sets

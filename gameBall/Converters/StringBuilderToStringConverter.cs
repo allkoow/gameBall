@@ -18,8 +18,7 @@ namespace gameBall
                 StringBuilder stringBuilder = (value as StringBuilder);
                 return stringBuilder.ToString();
             }
-            else return null;
-            
+            else return null;  
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

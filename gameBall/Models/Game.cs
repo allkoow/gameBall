@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace gameBall.ViewModel
 {
-    public class Game : IGame, INotifyPropertyChanged
+    public class Game : IGame
     {
         Player _playerA = null;
         Player _playerB = null;
@@ -23,28 +23,11 @@ namespace gameBall.ViewModel
 
         bool flagOfTheEnd = false;
 
-        private StringBuilder _texts = null;
-        private StringBuilder texts
+        public StringBuilder texts
         {
-            get { return _texts; }
-            set
-            {
-                _texts = value;
-                OnPropertyChanged(nameof(texts));
-            }
+            get;
+            set;
         }
-
-        #region property changed
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
 
         public Game(Player playerA, Player playerB)
         {
@@ -61,14 +44,14 @@ namespace gameBall.ViewModel
             calculateHitRatioOfPlayer(playerB);
             
             // string builder for messages
-            _texts = new StringBuilder();
+            texts = new StringBuilder();
         }
 
         public void setParametersOfPlayer(Player player)
         {
             player.dayDispostion = 50.0 + random.Next(0, 50);
             player.morale = 80.0 + random.Next(0, 20);
-            player.concentration = 100.0;
+            player.concentration = 80.0 + random.Next(0, 20); ;
         }
 
         public void calculateHitRatioOfPlayer(Player player)
@@ -89,12 +72,12 @@ namespace gameBall.ViewModel
 
         public void updateConcentration()
         {
-            if (_playerA.pointsInSet - _playerB.pointsInSet > 15)
+            if (_playerA.pointsInSet - _playerB.pointsInSet > 10)
             {
                 _playerA.concentration -= 1.0;
                 _playerB.concentration += 1.0;
             }
-            if(_playerB.pointsInSet - _playerA.pointsInSet > 15)
+            if(_playerB.pointsInSet - _playerA.pointsInSet > 10)
             {
                 _playerA.concentration += 1.0;
                 _playerB.concentration -= 1.0;
@@ -107,7 +90,7 @@ namespace gameBall.ViewModel
 
             if (_playerA.concentration > 100.0)
                 _playerA.concentration = 100.0;
-            if (_playerB.concentration < 100.0)
+            if (_playerB.concentration > 100.0)
                 _playerB.concentration = 100.0;
         }
 
@@ -127,6 +110,11 @@ namespace gameBall.ViewModel
                 player.morale += 1.0;
             else
                 player.morale -= 1.0;
+
+            if (player.morale < 0.0)
+                player.morale = 0.0;
+            if (player.morale > 100.0)
+                player.morale = 100.0;
         }
 
         public void checkHit(Player player, Player opponent, int hit)
@@ -135,7 +123,7 @@ namespace gameBall.ViewModel
 
             if (hit <= (10*player.hitRatio))
             {
-                _texts.AppendLine("Trafienie!");
+                texts.AppendLine("Trafienie!");
                 if (player.pointsInSet < 50)
                 {
                     player.pointsInSet += tableOfPoints[player.flagOfPoints];
@@ -149,7 +137,7 @@ namespace gameBall.ViewModel
             }
             else
             {
-                _texts.AppendLine("Pudło!");
+                texts.AppendLine("Pudło!");
                 constantFragment(opponent);
                 updateMorale(player, (int)moraleUpdate.decrease);
             }
@@ -179,18 +167,18 @@ namespace gameBall.ViewModel
 
                 hit = random.Next(1, 1000);
 
-                _texts.AppendLine(_playerA.name + " [" + _playerA.pointsInSet + "]" + " : " + "[" + _playerB.pointsInSet + "] " + _playerB.name);
+                texts.AppendLine(_playerA.name + " [" + _playerA.pointsInSet + "]" + " : " + "[" + _playerB.pointsInSet + "] " + _playerB.name);
 
                 if (whichPlayer == playerEnum.playerA)
                 {
-                    _texts.AppendLine("Przy piłce " + _playerA.name + "...");
+                    texts.AppendLine("Przy piłce " + _playerA.name + "...");
                     checkHit(_playerA, _playerB, hit);
                     whichPlayer = playerEnum.playerB;
                 }
 
                 else
                 {
-                    _texts.AppendLine("Przy piłce " + _playerB.name + "...");
+                    texts.AppendLine("Przy piłce " + _playerB.name + "...");
                     checkHit(_playerB, _playerA, hit);
                     whichPlayer = playerEnum.playerA;
                 }
@@ -255,10 +243,14 @@ namespace gameBall.ViewModel
                 updateMorale(opponent, (int)moraleUpdate.decrease);
 
                 Thread.Sleep(2000);
-                _texts.AppendLine("Koniec seta. Wygrała drużyna " + player.name + ".");
+                texts.AppendLine("Koniec seta. Wygrała drużyna " + player.name + ".");
 
                 player.pointsInSet = 0;
                 opponent.pointsInSet = 0;
+
+                // update concentration (random)
+                player.concentration += random.Next(-10, 10);
+                opponent.concentration += random.Next(-10, 10);
             }
         }
 
@@ -272,7 +264,7 @@ namespace gameBall.ViewModel
             }
             else
             {
-                _texts.AppendLine("Koniec meczu.");
+                texts.AppendLine("Koniec meczu.");
             }
         }
     }
