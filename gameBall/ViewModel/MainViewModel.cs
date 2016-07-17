@@ -78,13 +78,13 @@ namespace gameBall.ViewModel
         {
             SaveDataCommand = new RelayCommand(saveDataToFile);
             LoadDataCommand = new RelayCommand(loadDataFromFile);
-            AddTeam1Command = new RelayCommand<object>(addTeam1);
+            AddTeam1Command = new RelayCommand(addTeam1);
             AddTeam2Command = new RelayCommand(addTeam2);
             StartGameCommand = new RelayCommand(startGame);
             CancelGameCommand = new RelayCommand(cancelGame);
         }
 
-        public void addTeam1(object sender)
+        public void addTeam1()
         {
             if(_playerA == null)
             {
@@ -156,8 +156,6 @@ namespace gameBall.ViewModel
                 RaisePropertyChanged(nameof(playerB));
 
                 _game = null;
-
-                
             }   
         }
 

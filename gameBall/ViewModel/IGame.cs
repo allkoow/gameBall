@@ -11,9 +11,9 @@ namespace gameBall.ViewModel
     {
         void setParametersOfPlayer(Player player);
         void calculateHitRatioOfPlayer(Player player);
-        void updateConcentration(Player pA, Player pB);
+        void updateConcentration();
         void updateMorale(Player player, int mr);
-        void checkHit(Player pA, Player pB, int hit);
+        void checkHit(Player player, Player opponent, int hit);
         void playGame(object sender, DoWorkEventArgs eventArgs);
         void constantFragment(Player player);
         void endOfTheSet(Player pA, Player pB);
