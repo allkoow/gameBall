@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
 
-namespace gameBall.ViewModel
+namespace gameBall
 {
     public class Team : TeamStatistics, INotifyPropertyChanged
     {

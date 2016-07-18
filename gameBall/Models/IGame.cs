@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace gameBall.ViewModel
+namespace gameBall
 {
     interface IGame
     {

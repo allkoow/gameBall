@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace gameBall.ViewModel
+namespace gameBall
 {
     public class Game : IGame
     {
         Player _playerA = null;
         Player _playerB = null;
+
+        ObservableCollection<TeamWorldCup> _teamsWorldCup = null;
 
         Random random = null;
 
@@ -29,10 +32,12 @@ namespace gameBall.ViewModel
             set;
         }
 
-        public Game(Player playerA, Player playerB)
+        public Game(Player playerA, Player playerB, ObservableCollection<TeamWorldCup> teamsWorldCup)
         {
             _playerA = playerA;
             _playerB = playerB;
+
+            _teamsWorldCup = teamsWorldCup;
 
             random = new Random();
 
@@ -119,7 +124,7 @@ namespace gameBall.ViewModel
 
         public void checkHit(Player player, Player opponent, int hit)
         {
-            Thread.Sleep(500);
+            Thread.Sleep(250);
 
             if (hit <= (10*player.hitRatio))
             {
@@ -245,12 +250,16 @@ namespace gameBall.ViewModel
                 Thread.Sleep(2000);
                 texts.AppendLine("Koniec seta. Wygrała drużyna " + player.name + ".");
 
-                player.pointsInSet = 0;
-                opponent.pointsInSet = 0;
-
                 // update concentration (random)
                 player.concentration += random.Next(-10, 10);
                 opponent.concentration += random.Next(-10, 10);
+
+                // update points in match
+                player.pointsInMatch += player.pointsInSet;
+                opponent.pointsInMatch += opponent.pointsInSet;
+
+                player.pointsInSet = 0;
+                opponent.pointsInSet = 0;
             }
         }
 
@@ -264,7 +273,77 @@ namespace gameBall.ViewModel
             }
             else
             {
-                texts.AppendLine("Koniec meczu.");
+                group pAgroup = group.A;
+                group pBgroup = group.A;
+
+                foreach (TeamWorldCup team in _teamsWorldCup)
+                {
+                    if (team.name.Equals(_playerA.name))
+                        pAgroup = team.groupWC;
+
+                    if (team.name.Equals(_playerB.name))
+                        pBgroup = team.groupWC;
+                }
+
+                foreach (TeamWorldCup team in _teamsWorldCup)
+                {
+                    if (team.name.Equals(_playerA.name))
+                    {
+                        team.matchesPlayed += 1;
+
+                        if (_playerA.sets == 2)
+                        {
+                            team.matchesWon += 1;
+
+                            if (pBgroup == group.A)
+                                team.pointsInTournament += 4;
+                            if(pBgroup == group.B)
+                                team.pointsInTournament += 3;
+                            if(pBgroup == group.C)
+                                team.pointsInTournament += 2;
+                            if(pBgroup == group.D)
+                                team.pointsInTournament += 1;
+                        }
+                        else
+                            team.matchesLost += 1;
+
+                        team.setsWon += _playerA.sets;
+                        team.setsLost += _playerB.sets;
+
+                        team.pointsAchieved += _playerA.pointsInMatch;
+                        team.pointsLost += _playerB.pointsInMatch;
+                    }
+                }
+
+                foreach (TeamWorldCup team in _teamsWorldCup)
+                {
+                    if (team.name.Equals(_playerB.name))
+                    {
+                        team.matchesPlayed += 1;
+
+                        if (_playerB.sets == 2)
+                        {
+                            team.matchesWon += 1;
+
+                            if (pAgroup == group.A)
+                                team.pointsInTournament += 4;
+                            if (pAgroup == group.B)
+                                team.pointsInTournament += 3;
+                            if (pAgroup == group.C)
+                                team.pointsInTournament += 2;
+                            if (pAgroup == group.D)
+                                team.pointsInTournament += 1;
+                        }
+                        else
+                            team.matchesLost += 1;
+
+                        team.setsWon += _playerB.sets;
+                        team.setsLost += _playerA.sets;
+
+                        team.pointsAchieved += _playerB.pointsInMatch;
+                        team.pointsLost += _playerA.pointsInMatch;
+                    }
+                }
             }
         }
     }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:gameBall"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800"
+        Title="MainWindow" Height="600" Width="1200"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Window.Resources>
@@ -41,6 +41,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -48,6 +49,8 @@
         </Grid.RowDefinitions>
 
         <DataGrid x:Name="dataGrid" Grid.Row="0" ItemsSource="{Binding teams}" 
+                  FrozenColumnCount="1"
+                  AlternatingRowBackground="Coral"  AlternationCount="2"
                   AutoGenerateColumns="False"
                   SelectedItem="{Binding Path=selectedPlayer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
@@ -73,7 +76,49 @@
                     Command="{Binding LoadDataCommand}"/>
         </Grid>
 
-        <Grid Grid.Column="1">
+        <TabControl Grid.Column="1">
+            <TabItem Header="Puchar świata">
+                <DataGrid x:Name="dataGridTournament"
+                        FrozenColumnCount="1"
+                        AlternatingRowBackground="Gainsboro"  AlternationCount="2"
+                        ItemsSource="{Binding teamsWorldCup}"
+                        AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nazwa" Binding="{Binding name}"/>
+                        <DataGridTextColumn Header="Grupa" Binding="{Binding groupWC}"/>
+                        <DataGridTextColumn Header="Punkty" Binding="{Binding pointsInTournament}"/>
+                        <DataGridTextColumn Header="Mecze" Binding="{Binding matchesPlayed}" />
+                        <DataGridTextColumn Header="Mecze wygrane" Binding="{Binding matchesWon}"/>
+                        <DataGridTextColumn Header="Mecze przegrane" Binding="{Binding matchesLost}"/>
+                        <DataGridTextColumn Header="Sety wygrane" Binding="{Binding setsWon}"/>
+                        <DataGridTextColumn Header="Sety przegrane" Binding="{Binding setsLost}"/>
+                        <DataGridTextColumn Header="Ratio" Binding="{Binding setsRatio, StringFormat=F2}"/>
+                        <DataGridTextColumn Header="Punkty zdobyte" Binding="{Binding pointsAchieved}"/>
+                        <DataGridTextColumn Header="Punkty stracone" Binding="{Binding pointsLost}"/>
+                        <DataGridTextColumn Header="Ratio" Binding="{Binding pointsRatio, StringFormat=F2}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+                        
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnNewWorldCup" Grid.Column="0" Margin="5" 
+                    Content="Nowy turniej"
+                    Command="{Binding NewWorldCupCommand}"/>
+            <Button x:Name="btnSaveCup" Grid.Column="1" Margin="5" 
+                    Content="Zapisz turniej"
+                    Command="{Binding SaveWorldCupCommand}"/>
+            <Button x:Name="btnLoadCup" Grid.Column="2" Margin="5" 
+                    Content="Wczytaj turniej"
+                    Command="{Binding LoadWorldCupCommand}"/>
+        </Grid>
+                   
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>

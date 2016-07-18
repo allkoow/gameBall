@@ -82,6 +82,8 @@
     <Compile Include="Converters\StringBuilderToStringConverter.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\IGame.cs" />
+    <Compile Include="Models\TeamInTournament.cs" />
+    <Compile Include="Models\TeamWorldCup.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\Player.cs" />

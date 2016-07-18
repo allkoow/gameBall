@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace gameBall.ViewModel
+namespace gameBall
 {
     public class Player : Team, IDisposable
     {
@@ -29,6 +29,13 @@ namespace gameBall.ViewModel
                 _pointsInSet = value;
                 OnPropertyChanged(nameof(pointsInSet));
             }
+        }
+
+        private int _pointsInMatch;
+        public int pointsInMatch
+        {
+            get { return _pointsInMatch; }
+            set { _pointsInMatch = value; }
         }
 
         private double _hitRatio;
